@@ -2,7 +2,7 @@
 
 /**
  * @package future-friendly-images
- * @version 0.2
+ * @version 0.2.0
  *
  * @todo Add functionality to update all existing images inserted into posts to use ffimage shortcode.
  * @todo Add functionality to display image instead of shortcode in wysiwig.
@@ -12,7 +12,7 @@
 Plugin Name: Future Friendly Images
 Plugin URI: http://rgbboy.com/wordpress-plugins/future-friendly-images
 Description: <strong>Future Friendly Images</strong> makes your images future-friendly. Out of the box Wordpress hardcodes the <img> tag and all of your chosen settings into your content when you insert an image. Future Friendly Images alleviates this problem by inserting the <strong>[ffimage]</strong> shortcode instead. You can then update your images accross your entire site by adjusting the settings on the plugin page.
-Version: 0.2
+Version: 0.2.0
 Author: RGBboy
 Author URI: http://rgbboy.com/
 License: GPLv2
@@ -39,7 +39,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Fired on 'plugins_loaded' action
  *
- * @since 0.1
+ * @since 0.1.0
  *
  * @uses add_shortcode() Adds [ffimage] Shortcode
  * @uses is_admin() Checks if admin to add filter.
@@ -64,7 +64,7 @@ add_action( 'plugins_loaded', 'rgb_ffi_setup');
  * Takes the [ffimage] Shortcode and apats it to the intended image markup. Uses the same
  * process from /wp-admin/includes/media.php that an image being inserted would 
  *
- * @since 0.1
+ * @since 0.1.0
  *
  * @uses extract() Gets shortcode attributes and maps to variables.
  * @uses shortcode_atts() Combines user shortcode attributes with known attributes and fills in defaults when needed. 
@@ -122,7 +122,7 @@ function rgb_ffi_shortcode($atts) {
  * Copied and modified from the function get_image_send_to_editor() in wp-admin/includes/media.php
  * Takes the intended settings for the image and adapts them to the [ffimage] shortcode.
  *
- * @since 0.1
+ * @since 0.1.0
  *
  * @uses wp_get_attachment_url() Compares $url to this to determine type of link.
  * @uses get_attachment_link() Compares $url to this to determine type of link.

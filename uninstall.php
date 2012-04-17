@@ -2,7 +2,7 @@
 /**
  * @package future-friendly-images
  * @subpackage uninstall
- * @version 0.2
+ * @version 0.2.0
 */
 
 if( !defined( 'WP_UNISTALL_PLUGIN' ) ) {
@@ -14,7 +14,7 @@ if( !defined( 'WP_UNISTALL_PLUGIN' ) ) {
  *
  * {{@internal Missing Long Description}}}
  *
- * @since 0.1
+ * @since 0.1.0
  *
  * @todo add functionality to change all current image shortcodes to their intended hardcoded <img> value
 */
