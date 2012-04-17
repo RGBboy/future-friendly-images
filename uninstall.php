@@ -2,7 +2,7 @@
 /**
  * @package future-friendly-images
  * @subpackage uninstall
- * @version 0.1
+ * @version 0.2
 */
 
 if( !defined( 'WP_UNISTALL_PLUGIN' ) ) {
@@ -15,12 +15,11 @@ if( !defined( 'WP_UNISTALL_PLUGIN' ) ) {
  * {{@internal Missing Long Description}}}
  *
  * @since 0.1
- * @uses delete_option() to remove saved options from the database.
+ *
+ * @todo add functionality to change all current image shortcodes to their intended hardcoded <img> value
 */
 
 function rgb_ffi_uninstall() {
-
-  delete_option( 'rgb_ffi_options' );
 
 }
 

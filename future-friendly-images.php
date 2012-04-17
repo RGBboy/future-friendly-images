@@ -2,14 +2,17 @@
 
 /**
  * @package future-friendly-images
- * @version 0.1
+ * @version 0.2
+ *
+ * @todo Add functionality to update all existing images inserted into posts to use ffimage shortcode.
+ * @todo Add functionality to display image instead of shortcode in wysiwig.
 */
 
 /*
 Plugin Name: Future Friendly Images
 Plugin URI: http://rgbboy.com/wordpress-plugins/future-friendly-images
 Description: <strong>Future Friendly Images</strong> makes your images future-friendly. Out of the box Wordpress hardcodes the <img> tag and all of your chosen settings into your content when you insert an image. Future Friendly Images alleviates this problem by inserting the <strong>[ffimage]</strong> shortcode instead. You can then update your images accross your entire site by adjusting the settings on the plugin page.
-Version: 0.1
+Version: 0.2
 Author: RGBboy
 Author URI: http://rgbboy.com/
 License: GPLv2
@@ -31,61 +34,21 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-//Example function documentation:
-
-/**
- * {{@internal Missing Short Description}}}
- *
- * {{@internal Missing Long Description}}}
- *
- * @since 0.1
- * @uses function_name() {{@internal Missing Description}}}
- *
- * @param type varName Description
- * @return type Description
-*/
-
-/**
- * On Plugin Activation
- *
- * {{@internal Missing Long Description}}}
- *
- * @since 0.1
-*/
-
-function rgb_ffi_activate() {
-  //activation code here
-}
-
-register_activation_hook( __FILE__, 'rgb_ffi_activate');
-
-/**
- * On Plugin Deactivation
- *
- * {{@internal Missing Long Description}}}
- *
- * @since 0.1
-*/
-
-function rgb_ffi_deactivate() {
-  //deactivation code here
-}
-
-register_deactivation_hook( __FILE__, 'rgb_ffi_deactivate');
-
 /**
  * Plugin Setup
  *
  * Fired on 'plugins_loaded' action
  *
  * @since 0.1
+ *
+ * @uses add_shortcode() Adds [ffimage] Shortcode
+ * @uses is_admin() Checks if admin to add filter.
+ * @uses add_filter() Add filter to image_send_to_editor to inject [ffimage] Shortcode.
 */
 
 function rgb_ffi_setup() {
   
   add_shortcode( 'ffimage', 'rgb_ffi_shortcode' );
-  
-  //if current user can edit posts/pages/custom-post-types
   
   if ( is_admin() ) {
     add_filter( 'image_send_to_editor', 'rgb_ffi_shortcode_send_to_editor', 100, 8);
@@ -96,18 +59,29 @@ function rgb_ffi_setup() {
 add_action( 'plugins_loaded', 'rgb_ffi_setup');
 
 /**
- * ffimage shortcode
+ * [ffimage] Shortcode
  *
- * {{@internal Missing Long Description}}}
+ * Takes the [ffimage] Shortcode and apats it to the intended image markup. Uses the same
+ * process from /wp-admin/includes/media.php that an image being inserted would 
  *
  * @since 0.1
- * @param unknown_type $atts
- * @param unknown_type $content
- * @param unknown_type $code
+ *
+ * @uses extract() Gets shortcode attributes and maps to variables.
+ * @uses shortcode_atts() Combines user shortcode attributes with known attributes and fills in defaults when needed. 
+ * @uses wp_get_attachment_url()
+ * @uses get_attachment_link() 
+ * @uses get_post() Gets attachment.
+ * @uses get_post_meta() Gets attachments alt text value.
+ * @uses get_image_send_to_editor() Gets the intended image markup from the core.
+ * @uses do_shortcode() Translates shortcodes added by get_image_send_to_editor().
+ * @uses remove_filter() Removes rgb_ffi_shortcode_send_to_editor from filter so correct output is created.
+ * @uses add_filter() Adds rgb_ffi_shortcode_send_to_editor back to filter.
+ *
+ * @param Array $atts Array of attribute => value pairs.
  * @return String
 */
 
-function rgb_ffi_shortcode($atts, $content = null, $code ="") {
+function rgb_ffi_shortcode($atts) {
   
   extract( shortcode_atts( array(
 		'id' => null,
@@ -143,11 +117,15 @@ function rgb_ffi_shortcode($atts, $content = null, $code ="") {
 }
 
 /**
- * ffimage shortcode send to editor
+ * Sends ffimage shortcode to editor.
  *
- * Copied and modified from function get_image_send_to_editor in wp-admin/includes/media.php
+ * Copied and modified from the function get_image_send_to_editor() in wp-admin/includes/media.php
+ * Takes the intended settings for the image and adapts them to the [ffimage] shortcode.
  *
  * @since 0.1
+ *
+ * @uses wp_get_attachment_url() Compares $url to this to determine type of link.
+ * @uses get_attachment_link() Compares $url to this to determine type of link.
  *
  * @param unknown_type $html
  * @param unknown_type $id
@@ -157,7 +135,7 @@ function rgb_ffi_shortcode($atts, $content = null, $code ="") {
  * @param unknown_type $url
  * @param unknown_type $rel
  * @param unknown_type $size
- * @return unknown
+ * @return String
 */
 
 function rgb_ffi_shortcode_send_to_editor($html, $id, $caption, $title, $align, $url, $size, $alt = '') {
