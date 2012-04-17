@@ -88,11 +88,8 @@ function rgb_ffi_setup() {
   //if current user can edit posts/pages/custom-post-types
   
   if ( is_admin() ) {
-    add_filter( 'image_send_to_editor', 'rgb_ffi_shortcode_send_to_editor', 10, 8);
+    add_filter( 'image_send_to_editor', 'rgb_ffi_shortcode_send_to_editor', 100, 8);
   }
-  
-  //add ability to insert ffimage via media insert
-  //add_filter( 'image_send_to_editor', 'rgb_ffi_shortcode_send_to_editor'), 10, 8);
 
 }
 
@@ -104,10 +101,45 @@ add_action( 'plugins_loaded', 'rgb_ffi_setup');
  * {{@internal Missing Long Description}}}
  *
  * @since 0.1
+ * @param unknown_type $atts
+ * @param unknown_type $content
+ * @param unknown_type $code
+ * @return String
 */
 
-function rgb_ffi_shortcode() {
-  return '<img src="' .plugins_url( 'images/test-image.jpg', __FILE__ ). '" alt="Test Image" />';
+function rgb_ffi_shortcode($atts, $content = null, $code ="") {
+  
+  extract( shortcode_atts( array(
+		'id' => null,
+		'align' => 'none',
+		'size' => 'medium',
+		'link' => ''
+		), $atts ) );
+		
+	if( $link == 'file' ) {
+	  $url = wp_get_attachment_url( $id );
+	} elseif( $link == 'post') {
+	  $url = get_attachment_link( $id );
+	} else {
+	  $url = $link;
+	}
+	
+	$rel = ( $url == get_attachment_link($id) );
+	$post = get_post($id);
+	$caption = $post -> post_excerpt;
+  $title = $post -> post_title;
+  $alt = get_post_meta( $id, '_wp_attachment_image_alt', true) ;
+  
+  remove_filter( 'image_send_to_editor', 'rgb_ffi_shortcode_send_to_editor', 100, 8);
+  
+  //Should this file be included like this? Is there a way that this directory be moved by the user?
+  require_once( ABSPATH.'wp-admin/includes/media.php' );
+  
+  $html = do_shortcode(get_image_send_to_editor($id, $caption, $title, $align, $url, $rel, $size, $alt));
+  add_filter( 'image_send_to_editor', 'rgb_ffi_shortcode_send_to_editor', 100, 8);
+  
+  return $html;
+  
 }
 
 /**
@@ -126,8 +158,6 @@ function rgb_ffi_shortcode() {
  * @param unknown_type $rel
  * @param unknown_type $size
  * @return unknown
- *
- * @todo $url = none, file URL, attachment post URl or custom (just adds specified string)
 */
 
 function rgb_ffi_shortcode_send_to_editor($html, $id, $caption, $title, $align, $url, $size, $alt = '') {
@@ -135,6 +165,12 @@ function rgb_ffi_shortcode_send_to_editor($html, $id, $caption, $title, $align, 
   $alignString = '';
   $urlString = '';
   $sizeString = '';
+  
+  if( wp_get_attachment_url( $id ) == $url ) {
+    $url = 'file';
+  } elseif( get_attachment_link( $id ) == $url ) {
+    $url = 'post';
+  }
   
   if( $align ) {
     $alignString = 'align="'.$align.'" ';
@@ -149,6 +185,7 @@ function rgb_ffi_shortcode_send_to_editor($html, $id, $caption, $title, $align, 
   $html = '[ffimage id="'.$id.'" ' .$alignString.$urlString.$sizeString. '/]';
   
   return $html;
+  
 }
 
 ?>

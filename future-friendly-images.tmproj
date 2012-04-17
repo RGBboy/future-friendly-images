@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>currentDocument</key>
-	<string>future-friendly-images.php</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -42,7 +40,7 @@
 			<key>filename</key>
 			<string>future-friendly-images.php</string>
 			<key>lastUsed</key>
-			<date>2012-04-16T08:27:46Z</date>
+			<date>2012-04-16T12:30:43Z</date>
 			<key>selected</key>
 			<true/>
 		</dict>
@@ -56,29 +54,10 @@
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>200</integer>
 	<key>metaData</key>
-	<dict>
-		<key>future-friendly-images.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>19</integer>
-				<key>line</key>
-				<integer>136</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>106</integer>
-		</dict>
-	</dict>
-	<key>openDocuments</key>
-	<array>
-		<string>future-friendly-images.php</string>
-	</array>
+	<dict/>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{406, 190}, {1331, 894}}</string>
+	<string>{{379, 189}, {1331, 894}}</string>
 </dict>
 </plist>
