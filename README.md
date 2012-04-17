@@ -1,7 +1,7 @@
 Future Friendly Images
 ======================
 
-**Future Friendly Images* makes your images future-friendly. Out of the
+**Future Friendly Images** makes your images future-friendly. Out of the
 box Wordpress hardcodes the <img> tag and all of your chosen settings into
 your content when you insert an image. Future Friendly Images alleviates
 this problem by inserting the **[ffimage]** shortcode instead. You can
